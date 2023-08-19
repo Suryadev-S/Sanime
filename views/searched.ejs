@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="d-flex flex-row-reverse">
+            <a class="btn btn-primary" href="/" role="button">Home</a>
+            <% if(locals.isAuth){%>
+                <a class="btn btn-primary" href="./profile" role="button">Profile</a>
+                <form action="/logout" method="POST">
+                    <input class="btn btn-primary" type="submit" value="Logout">
+                </form>
+            <%}else{%>
+                <a class="btn btn-primary" href="./signup" role="button">Sign up</a>
+                <a class="btn btn-primary" href="./login" role="button">Login</a>
+            <%}%>
+        </div>
+        <div class="container">
+            <h1>sanime</h1>
+            <form action="/get-anime" method="GET">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Search anime"
+                        aria-label="Recipient's username" aria-describedby="button-addon2" name="anime" id="anime" value="<%=anime%>">
+                    <!-- <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button> -->
+                    <input class="btn btn-outline-secondary" type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <form megthod='GET'action="/get-filtered-anime">
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" value="all" name="filter">
+                    <label class="btn btn-outline-primary" for="btncheck1">All</label>
+                  
+                    <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off" value="tv" name="filter">
+                    <label class="btn btn-outline-primary" for="btncheck2">tv</label>
+                  
+                    <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off" value="movie" name="filter">
+                    <label class="btn btn-outline-primary" for="btncheck3">movie</label>
+    
+                    <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off" value="ova" name="filter">
+                    <label class="btn btn-outline-primary" for="btncheck4">ova</label>
+    
+                    <input type="checkbox" class="btn-check" id="btncheck5" autocomplete="off" value="special" name="filter">
+                    <label class="btn btn-outline-primary" for="btncheck5">special</label>
+    
+                    <input type="checkbox" class="btn-check" id="btncheck6" autocomplete="off" value="ona" name="filter">
+                    <label class="btn btn-outline-primary" for="btncheck6">ona</label>
+
+                    <input type="hidden" value="<%=anime%>" name="anime">
+                    <input class="btn btn-primary" type="submit" value="Apply filter">
+                  </div>
+            </form>
+
+            <div class="row row-cols-1 row-cols-md-5 g-4">
+                <% for(let i=0; i < dataArray.length; i++) { %>
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="<%=dataArray[i].images.jpg.image_url%>" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%=dataArray[i].title%>
+                                </h5>
+                                <p class="card-text">
+                                    <% if(userLibList){ %>
+                                        <% if(
+                                            userLibList.find((obj)=> dataArray[i].mal_id == obj.mal_id )
+                                        ){ %>
+                                            <button class="btn btn-success" disabled>In Library</button>
+                                        <% }else{ %>
+                                            <a href="/add-to-library" class="btn btn-primary" 
+                                            data-id="<%=dataArray[i].mal_id%>"
+                                            data-image="<%=dataArray[i].images.jpg.image_url%>"
+                                            data-title="<%=dataArray[i].title%>">
+                                                Add to library
+                                            </a>
+                                        <% } %>
+                                    <% }else{ %>
+                                        <a class="btn btn-primary" href="/login">Login to add to library</a>
+                                    <%}%>
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-body-secondary"><%= dataArray[i].score %></small>
+                            </div>                        
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+
+                  <% for(let i = 0; i < pages.last_visible_page; i++ ){ %>
+                    <li class="page-item" data-page="<%=i+1%>"><a class="page-link" href="/page/<%=i+1%>"><%= i+1 %> </a></li>
+                  <% } %>
+
+                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </main>
+
+    <footer>
+        made with love
+    </footer>
+</body>
+</html>
