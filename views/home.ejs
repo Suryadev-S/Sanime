@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%-include("./includes/head")%>
+
+<body>
+    <!-- anime here is passed false because it was giving error -->
+    <%-include("./includes/header",{anime: false})%>
+
+    <main>
+        <div>
+            <h1>Ongoing anime</h1>
+            <!-- some carousel (wanted feature)-->
+            <div class="gallery">
+                <%seasonsArray.forEach((data)=>{%>
+                    <div class="card">
+                        <img src="<%=data.images.jpg.image_url%>" alt="" srcset="" class="top">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <%=data.title%>
+                            </div>
+                            <p><%=data.score%></p>
+                        </div>
+                    </div>
+                <%})%>
+                <form action="/get-anime" method="GET">
+                    <input type="hidden" name="anime" value="season">
+                    <button>see more</button>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <h1>Recently Added Episodes</h1>
+            <div class="gallery">
+                <%recentEpisodesArray.forEach((data)=>{%>
+                    <div class="card">
+                        <img src="<%=data.entry.images.jpg.image_url%>" alt="" srcset="" class="top">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <%=data.entry.title%>
+                            </div>
+                            <p>Episode: <%=data.episodes[0].mal_id%></p>
+                        </div>
+                    </div>
+                <%})%>
+                <form action="/get-anime" method="GET">
+                    <input type="hidden" name="anime" value="recent">
+                    <button>see more</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <%-include("./includes/footer") %>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<header>
+    <nav>
+        <div class="logo">
+            <p>Sanime</p>
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Signup</a></li>
+            <li><a href="#">Login</a></li>
+            <li><a href="#">Logout</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Admin</a></li>
+        </ul>
+    </nav>
+    <form id="searchBox" method="POST" action="/get-anime">
+        <%if(anime){%>
+            <input type="text" id="anime" placeholder="anime.." name="anime" value="<%=anime%>">
+        <%}else{%>
+            <input type="text" id="anime" placeholder="anime..">
+        <%}%>
+        <button id="button" type="submit">Search</button>
+    </form>
+</header>

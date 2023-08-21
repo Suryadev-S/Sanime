@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #23272f;
+}
+
+header {
+    width: 100%;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-size: 1.1em;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-size: 1.1em;
+}
+
+.logo {
+    font-size: 2em;
+    padding-left: 2em;
+    color: white;
+}
+
+.logo i {
+    display: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 8px;
+}
+
+nav li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+header #searchBox {
+    /* border: 1px solid red; */
+    height: 100px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+#searchBox input {
+    width: 40vw;
+    font-size: 1.1em;
+    padding: 10px 15px;
+    border-radius: 50px;
+    border: none;
+    background-color: rgba(120, 131, 155, .2);
+    color: #969faf;
+}
+
+button {
+    font-size: 1em;
+    padding: 10px 15px;
+    border-radius: 50px;
+    border: none;
+    background-color: #149eca;
+    color: white;
+}
+
+button:hover {
+    color: #90e0ef;
+    background-color: white;
+    outline: none;
+}
+
+
+main {
+    /* border: 1px solid red; */
+    width: 70%;
+    flex: 1;
+    color: white;
+}
+
+main>div {
+    margin-bottom: 20px;
+}
+
+.card {
+    width: 12vw;
+    border-radius: 15px;
+    object-fit: contain;
+    overflow: hidden;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    vertical-align: bottom;
+}
+
+.card-body {
+    padding: 20px 15px;
+}
+
+.card-title {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+
+.card .top {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), 0 100%);
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 40px;
+    /* border: 1px solid red; */
+    /* width: 80%; */
+    margin: auto;
+}
+
+footer {
+    color: white;
+    height: 10vh;
+    width: 100%
+}
+
+@media only screen and (max-width:600px) {
+    main {
+        width: 99%;
+    }
+
+    nav {
+        overflow: hidden;
+        padding: 10px 10px 0px 10px;
+    }
+
+    .logo {
+        display: flex;
+        justify-content: space-between;
+        padding-left: 0;
+    }
+
+    .logo i {
+        display: block;
+        margin: 5px 5px;
+        cursor: pointer;
+    }
+
+    nav,
+    .nav-links {
+        flex-direction: column;
+    }
+
+    .nav-links {
+        max-height: 0px;
+        transition: max-height 0.3s ease-in-out;
+    }
+
+    .card {
+        width: 40vw;
+    }
+
+    .card-body {
+        padding: 2px 8px;
+    }
+
+    .card-title,
+    .card p {
+        font-size: 0.9em;
+    }
+
+    .gallery {
+        gap: 10px;
+        width: 85%;
+    }
+
+    .pagination a {
+        padding: 5px 10px;
+    }
+}
