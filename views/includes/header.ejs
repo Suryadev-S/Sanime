@@ -13,11 +13,11 @@
             <li><a href="#">Admin</a></li>
         </ul>
     </nav>
-    <form id="searchBox" method="POST" action="/get-anime">
+    <form id="searchBox" method="GET" action="/get-anime">
         <%if(anime){%>
             <input type="text" id="anime" placeholder="anime.." name="anime" value="<%=anime%>">
         <%}else{%>
-            <input type="text" id="anime" placeholder="anime..">
+            <input type="text" id="anime" placeholder="anime.." name="anime">
         <%}%>
         <button id="button" type="submit">Search</button>
     </form>

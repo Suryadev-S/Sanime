@@ -4,6 +4,7 @@ const axios = require("axios");
 const app = express();
 
 app.use(express.static(path.join(__dirname,'public')));
+app.use(express.urlencoded({extended: false}));
 
 app.get("/",(req,res)=>{
     const urls = ['https://api.jikan.moe/v4/seasons/now','https://api.jikan.moe/v4/watch/episodes'];
@@ -24,34 +25,25 @@ app.get("/",(req,res)=>{
 
 app.get("/get-anime",(req,res)=>{
     const anime = req.query.anime;
-    let request;
-    if(anime=="season" || anime=="recent"){
-        request = anime;
-        //fetch only url with no parameters
+    let url = "https://api.jikan.moe/v4";
+    if(anime=='season'){
+        url += "/seasons/now";
+    }
+    else if(anime=="recent"){
+        url += "/watch/episodes";
     }
     else{
-        request = anime;
-        //fetch url with parameters
+        url += `/anime?q=${anime}`;
     }
-    res.render("home",{dataArray:[{
-        images: {
-            jpg:{
-                image_url: "",
-            }
-        },
-        title: "some title",
-        score: "8.2"
-    },{
-        images: {
-            jpg:{
-                image_url: "",
-            }
-        },
-        title: "another title",
-        score: "3.6"
-    }]},{
-        pages:{last_visible_page: 8}
-    });
+    axios.get(url)
+    .then((response)=>{
+        dataObject = response.data; //this '.data' is default for axios calls. It converts json to object
+        res.render('searched',{
+            dataArray: dataObject.data, //this '.data' is accessing the data key of the received json.
+            pages: dataObject.pagination,
+            anime: anime
+        })
+    })
 })
 
 app.set("view engine","ejs");

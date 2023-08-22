@@ -103,6 +103,26 @@ main>div {
     margin-bottom: 20px;
 }
 
+/*filter box styles*/
+.filterBox input {
+    appearance: none;
+    cursor: pointer;
+    border-radius: 2px;
+    padding: 5px 10px;
+    background: #23272f;
+    font-size: 15px;
+}
+
+.filterBox input:checked {
+    background: #149eca;
+}
+
+.filterBox input::before {
+    content: attr(label);
+    text-align: center;
+}
+
+/* Card styles */
 .card {
     width: 12vw;
     border-radius: 15px;
@@ -141,6 +161,28 @@ main>div {
     /* border: 1px solid red; */
     /* width: 80%; */
     margin: auto;
+}
+
+/* pagination styles */
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pagination a {
+    text-decoration: none;
+    padding: 8px 16px;
+    /* border: 1px solid blue; */
+}
+
+.pagination a:hover:not(.active) {
+    color: #149eca;
+}
+
+.active {
+    background-color: #149eca;
+    color: white;
 }
 
 footer {

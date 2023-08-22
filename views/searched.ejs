@@ -5,55 +5,62 @@
 
 <body>
 
-    <%-include("./includes/header")%>
+    <%-include("./includes/header",{anime:anime})%>
 
     <main>
-        <div class="filterBox">
-            <form action="/get-filtered-anime" method="GET">
-                <input label="All" name="filter" type="radio" checked>
-                <input label="tv" name="filter" type="radio"  value="tv">
-                <input label="movie" name="filter" type="radio" value="movie">
-                <input label="ova" name="filter" type="radio" value="ova">
-                <input label="special" name="filter" type="radio" value="special">
-                <input label="ona" name="filter" type="radio" value="ona">
-                <input type="hidden" value="<%=anime%>" name="anime">
-                <button type="submit">Apply filter</button>
-            </form>
-        </div>
+        <!-- because there is no filter params for recent episode api endpoint -->
+        <%if(anime!="recent"){%>
+            <div class="filterBox">
+                <form action="/get-filtered-anime" method="GET">
+                    <input label="All" name="filter" type="radio" checked>
+                    <input label="tv" name="filter" type="radio"  value="tv">
+                    <input label="movie" name="filter" type="radio" value="movie">
+                    <input label="ova" name="filter" type="radio" value="ova">
+                    <input label="special" name="filter" type="radio" value="special">
+                    <input label="ona" name="filter" type="radio" value="ona">
+                    <input type="hidden" value="<%=anime%>" name="anime">
+                    <button type="submit">Apply filter</button>
+                </form>
+            </div>
+        <%}%>
         <div>
-            <h1>Ongoing anime</h1>
+            <h1><%=anime%></h1>
             <!-- some carousel (wanted feature)-->
             <div class="gallery">
-                <%dataArray.forEach((data)=>{%>
-                    <div class="card">
-                        <img src="<%=data.images.jpg.image_url%>" alt="" srcset="" class="top">
-                        <div class="card-body">
-                            <div class="card-title">
-                                <%=data.title%>
+                <!-- episodes api endpoint has different json structure -->
+                <%if(anime=="recent"){%>
+                    <%dataArray.forEach((data)=>{%>
+                        <div class="card">
+                            <img src="<%=data.entry.images.jpg.image_url%>" alt="" srcset="" class="top">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <%=data.entry.title%>
+                                </div>
+                                <p>Episode: <%=data.episodes[0].mal_id%></p>
                             </div>
-                            <p><%=data.score%></p>
                         </div>
-                    </div>
-                <%})%>
-                <form action="" method="GET">
-                    <button>see more</button>
-                </form>
+                    <%})%>
+                <%}else{%>
+                    <%dataArray.forEach((data)=>{%>
+                        <div class="card">
+                            <img src="<%=data.images.jpg.image_url%>" alt="" srcset="" class="top">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <%=data.title%>
+                                </div>
+                                <p><%=data.score%></p>
+                            </div>
+                        </div>
+                    <%})%>
+                <%}%>
             </div>
         </div>
         <div class="pagination">
-            <a href="#" id="prev" data-page="1">&laquo;</a>            
-            <% for(let i = 0; i < pages.last_visible_page; i++ ){ %>
-              <!-- <li class="page-item" data-page="<%=i+1%>"><a class="page-link" href="/page/<%=i+1%>"><%= i+1 %> </a></li> -->
+            <a href="#" id="prev" data-page="1">&laquo;</a>
+            <a href="/page/1%>" data-page="1" class="active">1</a>      
+            <% for(let i = 1; i < pages.last_visible_page; i++ ){ %>
               <a href="/page/<%=i+1%>" data-page="<%=i+1%>"><%= i+1 %></a>
             <% } %>
-            <!-- <a href="#" data-link="1">1</a>
-            <a href="#" data-link="2" class="active">2</a>
-            <a href="#" data-link="3">3</a>
-            <a href="#" data-link="4">4</a>
-            <a href="#" data-link="5">5</a>
-            <a href="#" data-link="6">6</a>
-            <a href="#" data-link="7">7</a>
-            <a href="#" data-link="8">8</a> -->
             <a href="#" id="next" data-page="3">&raquo;</a>
         </div>
     </main>
@@ -61,5 +68,70 @@
     <footer>
         made with love
     </footer>
+    <script>
+        const icon = document.querySelector(".logo i");
+        const pagination = document.querySelector(".pagination");
+        const pageLinks = document.querySelectorAll('.pagination a:not(#prev):not(#next)');
+        const prevButton = document.querySelector("#prev");
+        const nextButton = document.querySelector("#next");
+        const navLinks = document.querySelector('.nav-links');
+        icon.addEventListener('click', () => {
+            console.log("clicked");
+            if (navLinks.style.maxHeight) {
+                navLinks.style.maxHeight = null;
+            } else {
+                navLinks.style.maxHeight = navLinks.scrollHeight + 'px';
+            }
+        });
+
+        pagination.addEventListener("click", (e) => {
+            if (e.target.tagName === "A") {
+                if (e.target.id == "prev") {
+                    const current = document.querySelector(".active");
+                    if (current.dataset.page == 1) {
+                        e.target.dataset.page = 1;
+                    }
+                    else{
+                        nextButton.dataset.page = current.dataset.page;
+                        e.target.dataset.page = current.dataset.page - 2;
+                        current.previousElementSibling.classList.add("active");
+                        current.classList.remove("active");
+                    }
+                }
+                else if (e.target.id == "next") {
+                    const current = document.querySelector(".active");
+                    if(current.dataset.page == pageLinks.length){
+                        e.target.dataset.page = pageLinks.length;
+                    }
+                    else{
+                        prevButton.dataset.page = current.dataset.page;
+                        e.target.dataset.page = parseInt(current.dataset.page) + 2;
+                        // console.log(e.target.dataset.page);
+                        current.nextElementSibling.classList.add("active");
+                        current.classList.remove("active");
+                    }
+                }
+                else{
+                    pageLinks.forEach((link) => {
+                        link.classList.remove("active");
+                    })
+                    e.target.classList.add("active");
+                    if(e.target.dataset.page === 1){
+                        prevButton.dataset.page = 1;
+                    }
+                    else{
+                        prevButton.dataset.page = e.target.dataset.page - 1;
+                    }
+                    if(e.target.dataset.page === pageLinks.length){
+                        nextButton.dataset.page = pageLinks.length;
+                    }
+                    else{
+                        nextButton.dataset.page = parseInt(e.target.dataset.page) + 1;
+                    }
+                }
+            }
+        })
+    </script>
+    <script src="newScript.js"></script>
 </body>
 </html>
