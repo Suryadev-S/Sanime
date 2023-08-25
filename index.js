@@ -42,7 +42,7 @@ app.get("/get-anime",(req,res)=>{
             dataArray: dataObject.data, //this '.data' is accessing the data key of the received json.
             pages: dataObject.pagination,
             anime: anime,
-            filter: null
+            filter: null //for the sake of working, a bogus variable
         })
     })
 })
