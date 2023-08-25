@@ -2,13 +2,26 @@ let url;
 $(document).ready(() => {
     $('.pagination a').click((e)=>{
         e.preventDefault();
+        let filter = $('input[type="radio"]:checked').val();
         if($('#anime').val()==='season'){
-            url = "https://api.jikan.moe/v4";
-            url+=`/seasons/now?page=${$(e.currentTarget).data('page')}`;
+            if(filter=="all"){
+                url = "https://api.jikan.moe/v4";
+                url+=`/seasons/now?page=${$(e.currentTarget).data('page')}`;
+            }
+            else{
+                url = "https://api.jikan.moe/v4";
+                url += `/seasons/now?filter=${filter}&page=${$(e.currentTarget).data('page')}`;
+            }
         }
         else{
-            url = "https://api.jikan.moe/v4";
-            url+=`/anime?q=${$('#anime').val()}&page=${$(e.currentTarget).data('page')}`
+            if(filter=="all"){
+                url = "https://api.jikan.moe/v4";
+                url+=`/anime?q=${$('#anime').val()}&page=${$(e.currentTarget).data('page')}`
+            }
+            else{
+                url = "https://api.jikan.moe/v4";
+                url+=`/anime?q=${$('#anime').val()}&type=${filter}&page=${$(e.currentTarget).data('page')}`
+            }
         }
         $(".gallery").empty();
         resourceFetch(url).then((data) => {

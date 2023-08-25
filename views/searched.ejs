@@ -12,13 +12,13 @@
         <%if(anime!="recent"){%>
             <div class="filterBox">
                 <form action="/get-filtered-anime" method="GET">
-                    <input label="All" name="filter" type="radio" checked>
-                    <input label="tv" name="filter" type="radio"  value="tv">
-                    <input label="movie" name="filter" type="radio" value="movie">
-                    <input label="ova" name="filter" type="radio" value="ova">
-                    <input label="special" name="filter" type="radio" value="special">
-                    <input label="ona" name="filter" type="radio" value="ona">
-                    <input type="hidden" value="<%=anime%>" name="anime">
+                    <input label="All" name="filter" type="radio" value="all" <%= filter === null || filter === 'all' ? 'checked' : '' %>>
+                    <input label="tv" name="filter" type="radio" value="tv" <%= filter === 'tv' ? 'checked' : '' %>>
+                    <input label="movie" name="filter" type="radio" value="movie" <%= filter === 'movie' ? 'checked' : '' %>>
+                    <input label="ova" name="filter" type="radio" value="ova" <%= filter === 'ova' ? 'checked' : '' %>>
+                    <input label="special" name="filter" type="radio" value="special" <%= filter === 'special' ? 'checked' : '' %>>
+                    <input label="ona" name="filter" type="radio" value="ona" <%= filter === 'ona' ? 'checked' : '' %>>
+                    <input type="hidden" name="anime" value="<%=anime%>">
                     <button type="submit">Apply filter</button>
                 </form>
             </div>

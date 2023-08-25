@@ -41,7 +41,40 @@ app.get("/get-anime",(req,res)=>{
         res.render('searched',{
             dataArray: dataObject.data, //this '.data' is accessing the data key of the received json.
             pages: dataObject.pagination,
-            anime: anime
+            anime: anime,
+            filter: null
+        })
+    })
+})
+
+app.get("/get-filtered-anime",(req,res)=>{
+    const anime = req.query.anime;
+    const filter = req.query.filter;
+    let url = "https://api.jikan.moe/v4";
+    if(anime=="season"){
+        if(filter == "all"){
+            url += "/seasons/now";
+        }
+        else{
+            url += `/seasons/now?filter=${filter}`;
+        }
+    }
+    else{
+        if(filter=="all"){
+            url += `/anime?q=${anime}`;
+        }
+        else{
+            url += `/anime?q=${anime}&type=${filter}`
+        }
+    }
+    axios.get(url)
+    .then((response)=>{
+        dataObject = response.data;
+        res.render('searched',{
+            dataArray: dataObject.data,
+            pages: dataObject.pagination,
+            anime: anime,
+            filter: filter
         })
     })
 })
