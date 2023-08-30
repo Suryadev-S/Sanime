@@ -41,7 +41,7 @@ async function resourceFetch(url) {
 }
 
 function showResultSet(animeDat) {
-    const dataArray = animeDat.data;
+    const dataArray = animeDat.data; 
     dataArray.forEach((data) => {
         $(".gallery").append(`
             <div class="card">
@@ -50,6 +50,10 @@ function showResultSet(animeDat) {
                     <div class="card-title">${data.title}</div>
                     <p>${data.score}</p>
                 </div>
+                <form action="/get-anime-info" method="GET">
+                    <input type="hidden" name="anime" value="${data.mal_id}">
+                    <button>view more</button>
+                </form>
             </div>
         `)
     });

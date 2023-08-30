@@ -191,6 +191,42 @@ footer {
     width: 100%
 }
 
+/* anime info styles */
+.container{
+    display: flex;
+}
+
+.imgBox{
+    flex: 30%;
+    object-fit: contain;
+}
+
+.imgBox img{
+    width: 100%;
+    height: auto;
+}
+
+.infoBox{
+    flex: 70%;
+    padding: 30px;
+}
+
+table{
+    /* border: 1px solid white; */
+    width: 100%;
+    border-spacing: 0 20px;
+}
+
+td{
+    vertical-align: top;
+}
+
+td:nth-child(odd){
+    color: #149eca;
+    width: 20%;
+}
+
+
 @media only screen and (max-width:600px) {
     main {
         width: 99%;

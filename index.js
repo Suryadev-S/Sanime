@@ -79,6 +79,18 @@ app.get("/get-filtered-anime",(req,res)=>{
     })
 })
 
+app.get("/get-anime-info",(req,res)=>{
+    const animeId = req.query.anime;
+    let url = `https://api.jikan.moe/v4/anime/${animeId}`;
+    axios.get(url)
+    .then((response)=>{
+        dataObject = response.data;
+        res.render("anime_info",{
+            data: dataObject.data
+        })
+    })
+})
+
 app.set("view engine","ejs");
 app.listen(3000,()=>{
     console.log("port connected");

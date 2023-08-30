@@ -21,6 +21,10 @@
                             </div>
                             <p><%=data.score%></p>
                         </div>
+                        <form action="/get-anime-info" method="GET">
+                            <input type="hidden" name="anime" value="<%=data.mal_id%>">
+                            <button>view more</button>
+                        </form>
                     </div>
                 <%})%>
                 <form action="/get-anime" method="GET">

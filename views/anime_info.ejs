@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%-include("./includes/head")%>
+
+<body>
+    <!-- anime here is passed false because it was giving error -->
+    <%-include("./includes/header",{anime: false})%>
+
+    <main>
+        <div class="container">
+            <div class="imgBox">
+                <img src="<%=data.images.jpg.large_image_url%>" alt="">
+            </div>
+            <div class="infoBox">
+                <h2><%=data.title%></h2>
+                <table>
+                    <tr>
+                        <td>title</td>
+                        <td><%=data.title%></td>
+                    </tr>
+                    <tr>
+                        <td>Synopsis</td>
+                        <td><%=data.synopsis%></td>
+                    </tr>
+                </table>
+                <div>
+                    <form action="/lib" method="POST">
+                        <button type="submit">Add to lib</button>
+                        <button type="submit">remove from lib</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%-include("./includes/footer") %>
+
+</body>
