@@ -164,6 +164,8 @@ router.post('/post-signup', async (req, res) => {
         req.session.save(()=>{
             return res.redirect('/signup');
         })
+
+
         return; //kinda important here to avoid response clash
     }
 

@@ -1,3 +1,15 @@
 <footer>
     made by
 </footer>
+<script>
+    const icon = document.querySelector(".logo i");
+    const navLinks = document.querySelector('.nav-links');
+    icon.addEventListener('click', () => {
+        console.log("clicked");
+        if (navLinks.style.maxHeight) {
+            navLinks.style.maxHeight = null;
+        } else {
+            navLinks.style.maxHeight = navLinks.scrollHeight + 'px';
+        }
+    });
+</script>

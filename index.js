@@ -1,10 +1,36 @@
 const path = require("path");
+const db = require("./database");
+const bcrypt = require("bcryptjs")
 const express = require("express");
+const session = require("express-session");
+const mongodbStore = require("connect-mongodb-session");
 const axios = require("axios");
 const app = express();
 
+const MongoDBStore = mongodbStore(session);
+
+const sessionStore = new MongoDBStore({
+    uri: 'mongodb://127.0.0.1:27017/',
+    databaseName: 'anime_user',
+    collection: 'sessions'
+})
+
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.urlencoded({extended: false}));
+app.use(session({
+    secret: 'super-secret',
+    resave: false,
+    saveUninitialized: false, 
+    store: sessionStore
+}))
+app.use((req,res,next)=>{
+    const user = req.session.user;
+    if(!user){
+        return next();
+    }
+    res.locals.user = user;
+    next();
+})
 
 app.get("/",(req,res)=>{
     const urls = ['https://api.jikan.moe/v4/seasons/now','https://api.jikan.moe/v4/watch/episodes'];
@@ -91,7 +117,77 @@ app.get("/get-anime-info",(req,res)=>{
     })
 })
 
+app.get("/signup",(req,res)=>{
+    const signupInput = req.session.signupInput;
+    if(!signupInput){
+        return res.render("signup",{message: null});
+    }
+    req.session.signupInput = null;
+    res.render("signup",{message: signupInput.message});
+})
+
+app.post("/signup",async (req,res)=>{
+    const {email,password} = req.body;
+    const existingUser = await db.getDb().collection("user").findOne({email: email});
+    // console.log(existingUser);
+    if(existingUser){
+        // console.log("this user already exists");
+        req.session.signupInput = {
+            message: "user already exists"
+        };
+        req.session.save(()=>{
+            return res.redirect("/signup");
+        })
+        return;
+    }
+    const hashedPass = await bcrypt.hash(password,12);
+    await db
+    .getDb()
+    .collection("user")
+    .insertOne({email: email,password: hashedPass});
+    res.redirect("/login");
+})
+
+app.get("/login",(req,res)=>{
+    const loginInput = req.session.loginInput;
+    if(!loginInput){
+        return res.render("login",{message: null});
+    }
+    req.session.loginInput = null;
+    res.render("login",{message: loginInput.message});
+})
+
+app.post("/login",async (req,res)=>{
+    const {email,password} = req.body;
+    const existingUser = await db.getDb().collection("user").findOne({email: email});
+    if(!existingUser){
+        // console.log("there is no such user");
+        req.session.loginInput = {message: "there is no such user.Maybe go and signup first"};
+        req.session.save(()=>{
+            return res.redirect("/login");
+        })
+        return;
+    }
+    const passAreEqual = await bcrypt.compare(password,existingUser.password);
+    if(!passAreEqual){
+        req.session.loginInput = {message: "password doesn't match"};
+        req.session.save(()=>{
+            return res.redirect("/login");
+        })
+        return;
+    }
+    req.session.user = {
+        email: email
+    }
+    req.session.save(()=>{
+        return res.redirect("/");
+    })
+})
+
 app.set("view engine","ejs");
-app.listen(3000,()=>{
-    console.log("port connected");
+
+db.connectDb().then(()=>{
+    app.listen(8000,()=>{
+        console.log("port and database connected");
+    })
 })

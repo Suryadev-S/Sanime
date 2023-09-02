@@ -5,12 +5,14 @@
             <i class="fa-solid fa-bars"></i>
         </div>
         <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Signup</a></li>
-            <li><a href="#">Login</a></li>
-            <li><a href="#">Logout</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Admin</a></li>
+            <li><a href="/">Home</a></li>
+            <%if(!locals.user){%>
+                <li><a href="/signup">Signup</a></li>
+                <li><a href="/login">Login</a></li>
+            <%}else{%>
+                <li><a href="/logout">Logout</a></li>
+                <li><a href="/profile">Profile</a></li> 
+            <%}%>
         </ul>
     </nav>
     <form id="searchBox" method="GET" action="/get-anime">
