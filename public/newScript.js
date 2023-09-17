@@ -28,6 +28,13 @@ $(document).ready(() => {
             showResultSet(data);
         })
     })
+    $("button.lib").click((e)=>{
+        const {action,animeid,title,imgurl} = e.currentTarget.dataset;
+        console.log(action,animeid,title,imgurl);
+        libMgmt(animeid,action,title,imgurl).then((msg)=>{
+            e.currentTarget.textContent = msg.msg;
+        })
+    })
 })
 
 
@@ -58,3 +65,21 @@ function showResultSet(animeDat) {
         `)
     });
 }
+
+async function libMgmt(animeid,action,title=null,imgurl=null){
+    const response = await fetch("/libMgmnt",{
+        method: 'POST',
+        body: JSON.stringify({
+            animeid: animeid,
+            action: action,
+            title: title,
+            imgurl: imgurl
+        }),
+        headers: {
+            "Content-type": "application/json"
+        }
+    });
+    const message = await response.json();
+    return message;
+}
+

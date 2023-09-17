@@ -10,8 +10,10 @@
                 <li><a href="/signup">Signup</a></li>
                 <li><a href="/login">Login</a></li>
             <%}else{%>
-                <li><a href="/logout">Logout</a></li>
                 <li><a href="/profile">Profile</a></li> 
+                <form action="/logout" method="POST">
+                    <button type="submit">logout</button>
+                </form>
             <%}%>
         </ul>
     </nav>

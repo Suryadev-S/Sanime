@@ -25,10 +25,15 @@
                     </tr>
                 </table>
                 <div>
-                    <form action="/lib" method="POST">
-                        <button type="submit">Add to lib</button>
-                        <button type="submit">remove from lib</button>
-                    </form>
+                    <%if(!animeInLib){%>
+                        <button class="lib" 
+                        data-action="add" 
+                        data-animeid="<%=data.mal_id%>"
+                        data-title="<%=data.title%>"
+                        data-imgurl="<%=data.images.jpg.image_url%>">Add to lib</button>
+                    <%}else{%>
+                        <button class="lib" data-action="rem" data-animeId="<%=data.mal_id%>">remove from lib</button>
+                    <%}%>
                 </div>
             </div>
         </div>
