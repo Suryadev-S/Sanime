@@ -211,20 +211,16 @@ footer {
     padding: 30px;
 }
 
-table{
-    /* border: 1px solid white; */
-    width: 100%;
-    border-spacing: 0 20px;
+#grid{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 10px 5px;
 }
 
-td{
-    vertical-align: top;
-}
-
-td:nth-child(odd){
+#grid div:nth-child(odd){
     color: #149eca;
-    width: 20%;
 }
+
 
 /* login/signup styles */
 
@@ -300,5 +296,15 @@ main>form{
 
     .pagination a {
         padding: 5px 10px;
+    }
+    .container{
+        flex-direction: column;
+    }
+    #grid{
+        grid-template-columns: auto;
+    }
+    button{
+        font-size: 13px;
+        padding: 7px 15px;
     }
 }

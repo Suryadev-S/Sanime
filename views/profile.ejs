@@ -16,21 +16,25 @@
             <h1>Library</h1>
             <!-- some carousel (wanted feature)-->
             <div class="gallery">
-                <%lib.forEach((data)=>{%>
-                    <div class="card">
-                        <img src="<%=data.imgurl%>" class="top">
-                        <div class="card-body">
-                            <div class="card-title">
-                                <%=data.title%>
+                <%if(!lib||lib.length===0){%>
+                    <div>no items in the lib</div>
+                <%}else{%>
+                    <%lib.forEach((data)=>{%>
+                        <div class="card">
+                            <img src="<%=data.imgurl%>" class="top">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <%=data.title%>
+                                </div>
                             </div>
+                            <form action="/get-anime-info" method="GET">
+                                <input type="hidden" name="anime" value="<%=data.animeid%>">
+                                <button>view more</button>
+                            </form>
+                            <button class="lib" data-action="rem" data-animeId="<%=data.animeid%>">remove from lib</button>
                         </div>
-                        <form action="/get-anime-info" method="GET">
-                            <input type="hidden" name="anime" value="<%=data.animeid%>">
-                            <button>view more</button>
-                        </form>
-                        <button class="lib" data-action="rem" data-animeId="<%=data.animeid%>">remove from lib</button>
-                    </div>
-                <%})%>
+                    <%})%>
+                <%}%>
             </div>
         </div>
     </main>

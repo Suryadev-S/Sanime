@@ -14,7 +14,7 @@
             </div>
             <div class="infoBox">
                 <h2><%=data.title%></h2>
-                <table>
+                <!-- <table>
                     <tr>
                         <td>title</td>
                         <td><%=data.title%></td>
@@ -23,7 +23,13 @@
                         <td>Synopsis</td>
                         <td><%=data.synopsis%></td>
                     </tr>
-                </table>
+                </table> -->
+                <div id="grid">
+                    <div>title</div>
+                    <div><%=data.title%></div>
+                    <div>Synopsis</div>
+                    <div><%=data.synopsis%></div>
+                </div>
                 <div>
                     <%if(!animeInLib){%>
                         <button class="lib" 
