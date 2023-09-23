@@ -11,7 +11,7 @@ const port = 8000 || process.env.PORT;
 const MongoDBStore = mongodbStore(session);
 
 const sessionStore = new MongoDBStore({
-    uri: 'mongodb://127.0.0.1:27017/' || process.env.MONGODB_URL,
+    uri: process.env.MONGODB_URL,
     databaseName: 'anime_user',
     collection: 'sessions'
 })
